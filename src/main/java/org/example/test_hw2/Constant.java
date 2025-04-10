@@ -1,0 +1,31 @@
+package org.example.test_hw2;
+
+public class Constant {
+    private Double CENTRAL_X = 200.0;
+    private Double CENTRAL_Y =200.0 ;
+    private Double RATIO = 0.02;
+    private Double ANGLE = 3.1415/3;
+
+    private static Constant instance ;
+    public static Constant getinstance() {
+        if (instance == null) {
+            instance = new Constant ();
+        }
+        return instance;
+    }
+
+    public Double getCENTRAL_X() {
+        return CENTRAL_X;
+    }
+
+    public Double getCENTRAL_Y() {
+        return CENTRAL_Y;
+    }
+
+    public Double getRATIO() {
+        return RATIO;
+    }
+    public Double getANGLE() {
+        return ANGLE;
+    }
+}
