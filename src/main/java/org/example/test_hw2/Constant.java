@@ -1,9 +1,9 @@
 package org.example.test_hw2;
 
 public class Constant {
-    private Double CENTRAL_X = 200.0;
-    private Double CENTRAL_Y =200.0 ;
-    private Double RATIO = 0.02;
+    private Double CENTRAL_X = 500.0;
+    private Double CENTRAL_Y =300.0 ;
+    private Double RATIO = 0.1;
     private Double ANGLE = 3.1415/3;
 
     private static Constant instance ;
