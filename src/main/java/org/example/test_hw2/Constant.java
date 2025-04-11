@@ -5,6 +5,9 @@ public class Constant {
     private Double CENTRAL_Y =300.0 ;
     private Double RATIO = 0.1;
     private Double ANGLE = 3.1415/3;
+    private double CHANCE=0.60;
+    // GAME_NUMBER is in {4,5,6}
+    private int GAME_NUMBER = 6;
 
     private static Constant instance ;
     public static Constant getinstance() {
@@ -27,5 +30,11 @@ public class Constant {
     }
     public Double getANGLE() {
         return ANGLE;
+    }
+    public int getGAME_NUMBER() {
+        return GAME_NUMBER;
+    }
+    public double getCHANCE() {
+        return CHANCE;
     }
 }

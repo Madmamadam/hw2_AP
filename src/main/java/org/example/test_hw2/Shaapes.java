@@ -2,31 +2,120 @@ package org.example.test_hw2;
 
 import javafx.scene.shape.Polygon;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import java.util.Random;
 
-public class Trapezoid {
-    //main things
-    double radius;
-    double first_angle_in_degree;
-    Polygon polygon;
-    //another things
+public class Shaapes {
+    public static class Type1 {
+        Constant cons = new Constant();
+        private double radius;
+        private double first_angle_in_degree;
+        private int number_of_trapezoid = cons.getGAME_NUMBER() - 1;
+
+        public double getRadius() {
+            return radius;
+        }
+
+        public double getFirst_angle_in_degree() {
+            return first_angle_in_degree;
+        }
 
 
-    public static Trapezoid update_trap_polygon(double radius , double first_angle_in_degree , Trapezoid trapezoid) {
-        Constant cons = Constant.getinstance();
-        Polygon polygon = new Polygon();
-        double radius1=radius;
-        double radius2=radius*(1+cons.getRATIO());
-        double first_angle = first_angle_in_degree*(3.1415/180.0);
-        double second_angle=first_angle+cons.getANGLE();
-        //System.out.println(sin(3.1415/2));
+        public Trapezoid[] trapezoids = new Trapezoid[number_of_trapezoid];
 
-        polygon.getPoints().addAll(radius1*sin(first_angle)  + cons.getCENTRAL_X() ,radius1*cos(first_angle)+ cons.getCENTRAL_Y());
-        polygon.getPoints().addAll(radius2*sin(first_angle)  + cons.getCENTRAL_X() ,radius2*cos(first_angle)+ cons.getCENTRAL_Y());
-        polygon.getPoints().addAll(radius2*sin(second_angle) + cons.getCENTRAL_X() ,radius2*cos(second_angle)+ cons.getCENTRAL_Y());
-        polygon.getPoints().addAll(radius1*sin(second_angle) + cons.getCENTRAL_X() ,radius1*cos(second_angle)+ cons.getCENTRAL_Y());
-        return trapezoid;
+
+        public void update(double radius, double first_angle_in_degree) {
+            if (radius <= 0) radius = 0;
+            this.radius = radius;
+            this.first_angle_in_degree = first_angle_in_degree;
+            for (int i = 0; i < number_of_trapezoid; i++) {
+                this.trapezoids[i].update_trap_polygon(radius, first_angle_in_degree + 360 * i / cons.getGAME_NUMBER());
+            }
+        }
+
+        //initialize
+        public Type1() {
+            for (int i = 0; i < number_of_trapezoid; i++) {
+                this.trapezoids[i] = new Trapezoid();
+                this.trapezoids[i].polygon = new Polygon();
+            }
+        }
     }
+    public static class Type2 {
+        Constant cons = new Constant();
+        private double radius;
+        private double first_angle_in_degree;
+        private int number_of_trapezoid = cons.getGAME_NUMBER() / 2;
+        public Trapezoid[] trapezoids = new Trapezoid[number_of_trapezoid];
 
+        public double getRadius() {
+            return radius;
+        }
+
+        public double getFirst_angle_in_degree() {
+            return first_angle_in_degree;
+        }
+
+        public void update(double radius, double first_angle_in_degree) {
+            if (radius <= 0) {
+                radius = 0;
+            }
+            this.radius = radius;
+            this.first_angle_in_degree = first_angle_in_degree;
+            for (int i = 0; i < number_of_trapezoid; i++) {
+                this.trapezoids[i].update_trap_polygon(radius, first_angle_in_degree + 360 * 2 * i / cons.getGAME_NUMBER());
+            }
+        }
+
+        //initialize
+        public Type2() {
+            for (int i = 0; i < number_of_trapezoid; i++) {
+                this.trapezoids[i] = new Trapezoid();
+                this.trapezoids[i].polygon = new Polygon();
+            }
+        }
+    }
+    public static class Type3 {
+        Constant cons = new Constant();
+        private double radius;
+        private double first_angle_in_degree;
+        private int number_of_trapezoid = cons.getGAME_NUMBER() - 1;
+        private int [] exit = new int[number_of_trapezoid];
+
+        public double getRadius() {
+            return radius;
+        }
+
+        public double getFirst_angle_in_degree() {
+            return first_angle_in_degree;
+        }
+
+
+        public Trapezoid[] trapezoids = new Trapezoid[number_of_trapezoid];
+
+
+        public void update(double radius, double first_angle_in_degree) {
+            if (radius <= 0) radius = 0;
+            this.radius = radius;
+            this.first_angle_in_degree = first_angle_in_degree;
+            for (int i = 0; i < number_of_trapezoid; i++) {
+                if (exit[i] == 1) {
+//                    System.out.println("i="+i);
+                    this.trapezoids[i].update_trap_polygon(radius, first_angle_in_degree + (360 * i) / cons.getGAME_NUMBER());
+                }
+            }
+        }
+
+        //initialize
+        public Type3() {
+            Random rand = new Random();
+            for (int i = 0; i < number_of_trapezoid; i++) {
+
+                this.trapezoids[i] = new Trapezoid();
+                this.trapezoids[i].polygon = new Polygon();
+                this.exit[i] = rand.nextDouble() < cons.getCHANCE() ? 1 : 0;
+                System.out.println(exit[i]);
+            }
+        }
+
+    }
 }
