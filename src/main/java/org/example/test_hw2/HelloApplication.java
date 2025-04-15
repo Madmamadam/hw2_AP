@@ -32,7 +32,7 @@ public class HelloApplication extends Application {
 //        Pane root = new Pane();
         Pane gamepane = new Pane();
 
-        playercircle.setFill(Color.BLACK);
+        playercircle.setFill(Color.WHITE);
         playercircle.setRadius(cons.getPLAYER_CIRCLE_RADIUS());
         playercircle.setCenterX(cons.getCENTRAL_X()+cons.getPLAYER_RADIUS());
         playercircle.setCenterY(cons.getCENTRAL_Y());
@@ -163,7 +163,7 @@ public class HelloApplication extends Application {
                             intersection.getBoundsInLocal().getHeight() > 0;
                     if(isColliding) {
                         System.out.println("khorde khorde");
-//                        this.stop();
+                        this.stop();
                     }
 
 //                    if(trap.getRadius()==0) {
@@ -182,6 +182,9 @@ public class HelloApplication extends Application {
                 centerpoly.polygon.toFront();
                 playercircle.toFront();
                 Change.update_player();
+                cons.setDEGREE_DELTA(cons.getDEGREE_DELTA()+cons.getACC_DEGREE_DELTA());
+                cons.setCONTROL_DELTA_ANGLE(cons.getCONTROL_DELTA_ANGLE()+cons.getACC_CONTROL_DELTA_ANGLE());
+                cons.setDECENT_CONSTANT(cons.getDECENT_CONSTANT()+cons.getACC_DECENT_CONSTANT());
 //                gamescene.setOnKeyPressed(event -> {
 //                    switch (event.getCode()) {
 //                        case RIGHT -> Change.update_player_right(); // Move Up
@@ -197,7 +200,7 @@ public class HelloApplication extends Application {
                 if (keysPressed.contains(KeyCode.P)) {
                     this.stop();
                     stopped.set(true);
-                    onstop();
+//                    onstop();
                 }
                 //----------------------------------------------------------------flow
             }

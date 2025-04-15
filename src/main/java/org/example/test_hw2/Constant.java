@@ -10,17 +10,17 @@ public class Constant {
     private double CHANCE=0.99;
     // GAME_NUMBER is in {4,5,6}
     private int GAME_NUMBER = 6;
-    private double DECENT_CONSTANT =5.5;
+    private double DECENT_CONSTANT =1.5;
     private double DECENT_SCALE =0.98;
     private boolean CONSTANT_DECENT_MODE = true;
-    private double DEGREE_DELTA = 0.5;
+    private double DEGREE_DELTA = 0.3;
     private boolean CLOCKWISE = true;
     private double NEED_ADD_RADIUS=900;
     private double ADDING_RADIUS=NEED_ADD_RADIUS+200;
     private double REVERSE_CHANCE=0.1;
     private Color TRAP_COLOR = Color.BLUE;
-    private Color THEME_COLOR1 = Color.GREENYELLOW;
-    private Color THEME_COLOR2 = Color.RED;
+    private Color THEME_COLOR1 = Color.BLACK;
+    private Color THEME_COLOR2 = Color.PURPLE;
     private Color THEME_COLOR3 = Color.BLACK;
     private Color CENTER_POLY_COLOR = Color.BROWN;
     private double epsilon = NEED_ADD_RADIUS-ADDING_RADIUS/2;
@@ -29,8 +29,23 @@ public class Constant {
     private double CENTRAL_RADIUS=40;
     private double PLAYER_RADIUS=CENTRAL_RADIUS*1.5;
     private double PLAYER_CIRCLE_RADIUS = 4;
-    private double CONTROL_DELTA_ANGLE =8*3.1415/180;
+    private double CONTROL_DELTA_ANGLE =3*3.1415/180;
+    private double ACC_DECENT_CONSTANT=0.003;
+//    private double ACC_DECENT_SCALE=0.01;
+    private double ACC_DEGREE_DELTA=0.001;
+    private double ACC_CONTROL_DELTA_ANGLE =0.0025*3.1415/180;
 
+    public double getACC_CONTROL_DELTA_ANGLE() {
+        return ACC_CONTROL_DELTA_ANGLE;
+    }
+
+    public double getACC_DEGREE_DELTA() {
+        return ACC_DEGREE_DELTA;
+    }
+
+    public double getACC_DECENT_CONSTANT() {
+        return ACC_DECENT_CONSTANT;
+    }
     private static Constant instance ;
     public static Constant getinstance() {
         if (instance == null) {
@@ -84,9 +99,7 @@ public class Constant {
     public Color getTRAP_COLOR() {
         return TRAP_COLOR;
     }
-    public Color getTHEME_COLOR1() {
-        return THEME_COLOR1;
-    }
+    public Color getTHEME_COLOR1() {return THEME_COLOR1;}
     public Color getTHEME_COLOR2() {return THEME_COLOR2;}
     public Color getTHEME_COLOR3() {return THEME_COLOR3;}
     public Color getCENTER_POLY_COLOR() {return CENTER_POLY_COLOR;}
@@ -105,6 +118,17 @@ public class Constant {
 
     public void setREFERENCE_ANGLE_IN_DEGREE(double REFERENCE_ANGLE_IN_DEGREE) {
         this.REFERENCE_ANGLE_IN_DEGREE = REFERENCE_ANGLE_IN_DEGREE;
+    }
+
+    public void setDECENT_CONSTANT(double DECENT_CONSTANT) {
+        this.DECENT_CONSTANT = DECENT_CONSTANT;
+    }
+    public void setCONTROL_DELTA_ANGLE(double CONTROL_DELTA_ANGLE) {
+        this.CONTROL_DELTA_ANGLE = CONTROL_DELTA_ANGLE;
+    }
+
+    public void setDEGREE_DELTA(double DEGREE_DELTA) {
+        this.DEGREE_DELTA = DEGREE_DELTA;
     }
 
 }
