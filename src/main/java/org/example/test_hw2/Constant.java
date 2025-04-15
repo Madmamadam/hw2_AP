@@ -10,10 +10,10 @@ public class Constant {
     private double CHANCE=0.99;
     // GAME_NUMBER is in {4,5,6}
     private int GAME_NUMBER = 6;
-    private double DECENT_CONSTANT =2.5;
+    private double DECENT_CONSTANT =5.5;
     private double DECENT_SCALE =0.98;
     private boolean CONSTANT_DECENT_MODE = true;
-    private double DEGREE_DELTA = 1;
+    private double DEGREE_DELTA = 0.5;
     private boolean CLOCKWISE = true;
     private double NEED_ADD_RADIUS=900;
     private double ADDING_RADIUS=NEED_ADD_RADIUS+200;
@@ -22,13 +22,14 @@ public class Constant {
     private Color THEME_COLOR1 = Color.GREENYELLOW;
     private Color THEME_COLOR2 = Color.RED;
     private Color THEME_COLOR3 = Color.BLACK;
+    private Color CENTER_POLY_COLOR = Color.BROWN;
     private double epsilon = NEED_ADD_RADIUS-ADDING_RADIUS/2;
     private double CONTROL_SPEED =10;
     private double REFERENCE_ANGLE_IN_DEGREE = 2;
     private double CENTRAL_RADIUS=40;
-    private double PLAYER_RADIUS=CENTRAL_RADIUS*1.1;
-    private double PLAYER_CIRCLE_RADIUS = 2;
-    private double CONTROL_DELTA_ANGLE =20*3.1415/180;
+    private double PLAYER_RADIUS=CENTRAL_RADIUS*1.5;
+    private double PLAYER_CIRCLE_RADIUS = 4;
+    private double CONTROL_DELTA_ANGLE =8*3.1415/180;
 
     private static Constant instance ;
     public static Constant getinstance() {
@@ -88,6 +89,7 @@ public class Constant {
     }
     public Color getTHEME_COLOR2() {return THEME_COLOR2;}
     public Color getTHEME_COLOR3() {return THEME_COLOR3;}
+    public Color getCENTER_POLY_COLOR() {return CENTER_POLY_COLOR;}
     public double getEpsilon() {
         return epsilon;
     }

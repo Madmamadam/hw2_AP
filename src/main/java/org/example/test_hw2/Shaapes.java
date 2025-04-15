@@ -143,9 +143,11 @@ public class Shaapes {
             double first_angle = (first_angle_in_degree_from_reference+cons.getREFERENCE_ANGLE_IN_DEGREE()) *(3.1415/180.0);
             for(int i=0;i<cons.getGAME_NUMBER();i++ ) {
                 double i_th_angle = first_angle + i*2*3.1415/cons.getGAME_NUMBER();
-                polygon.getPoints().addAll(radius1 * sin(i_th_angle) + cons.getCENTRAL_X(), radius1 * cos(i_th_angle) + cons.getCENTRAL_Y());
-                polygon.getPoints().addAll(radius2 * sin(i_th_angle) + cons.getCENTRAL_X() ,radius2*cos(i_th_angle)+ cons.getCENTRAL_Y());
-
+                polygon.getPoints().addAll(radius1 * cos(i_th_angle) + cons.getCENTRAL_X(), radius1 * sin(i_th_angle) + cons.getCENTRAL_Y());
+            }
+            for(int i=0;i<cons.getGAME_NUMBER();i++ ) {
+                double i_th_angle = first_angle + i*2*3.1415/cons.getGAME_NUMBER();
+                polygon.getPoints().addAll(radius2 * cos(i_th_angle) + cons.getCENTRAL_X() ,radius2*sin(i_th_angle)+ cons.getCENTRAL_Y());
             }
         }
     }
@@ -163,11 +165,20 @@ public class Shaapes {
     public static class theme_triangle{
         Constant cons = Constant.getinstance();
         Polygon[] polygons = new Polygon[cons.getGAME_NUMBER()];
+
+        public theme_triangle() {
+            for (int i = 0; i < cons.getGAME_NUMBER(); i++) {
+                this.polygons[i] = new Polygon();
+            }
+        }
+
         public void update() {
             for (int i = 0; i < cons.getGAME_NUMBER(); i++) {
+                polygons[i].getPoints().clear();
                 double reference_degree=cons.getREFERENCE_ANGLE_IN_DEGREE()*3.1415/180;
-                polygons[i].getPoints().addAll(cons.getCENTRAL_X()+cons.getADDING_RADIUS()*cos(i*2*3.14115/cons.getGAME_NUMBER()+reference_degree),cons.getCENTRAL_Y()+cons.getADDING_RADIUS()*sin(i*2*3.14115/cons.getGAME_NUMBER()+reference_degree));
-                polygons[i].getPoints().addAll(cons.getCENTRAL_X()+cons.getADDING_RADIUS()*cos((i+1)*2*3.14115/cons.getGAME_NUMBER()+reference_degree),cons.getCENTRAL_X()+cons.getADDING_RADIUS()*sin(i*2*3.14115/cons.getGAME_NUMBER()+reference_degree));
+//                System.out.println("cos"+i*2*3.14115/cons.getGAME_NUMBER()+reference_degree);
+                polygons[i].getPoints().addAll(cons.getCENTRAL_X()+cons.getADDING_RADIUS()*cos( i   *2*3.14115/cons.getGAME_NUMBER()+reference_degree),cons.getCENTRAL_Y()+cons.getADDING_RADIUS()*sin( i   *2*3.14115/cons.getGAME_NUMBER()+reference_degree));
+                polygons[i].getPoints().addAll(cons.getCENTRAL_X()+cons.getADDING_RADIUS()*cos((i+1)*2*3.14115/cons.getGAME_NUMBER()+reference_degree),cons.getCENTRAL_Y()+cons.getADDING_RADIUS()*sin((i+1)*2*3.14115/cons.getGAME_NUMBER()+reference_degree));
                 polygons[i].getPoints().addAll(cons.getCENTRAL_X(),cons.getCENTRAL_Y());
                 if(i==cons.getGAME_NUMBER()-1 && i%2==0){
                     polygons[i].setFill(cons.getTHEME_COLOR3());

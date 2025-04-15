@@ -18,11 +18,8 @@ public class Trapezoid {
     }
 
 
-    Polygon polygon;
     // Constructor to initialize the polygon
-    public Trapezoid() {
-        polygon = new Polygon();
-    }
+    Polygon polygon = new Polygon();
 
 
     public void update_trap_polygon(double radius, double first_angle_in_degree_from_reference) {
