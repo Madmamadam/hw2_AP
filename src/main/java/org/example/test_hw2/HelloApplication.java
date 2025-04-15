@@ -2,6 +2,7 @@ package org.example.test_hw2;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HelloApplication extends Application {
@@ -24,7 +26,7 @@ public class HelloApplication extends Application {
         launch();
     }
     @Override
-    public void start(Stage stage) throws IOException, InterruptedException {
+    public void start(Stage stage) throws Exception {
         Constant cons = Constant.getinstance();
 //        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menu.fxml"));
 //        Pane root = new Pane();
@@ -66,6 +68,14 @@ public class HelloApplication extends Application {
         stage.setHeight(800);
         stage.setWidth(1200);
         stage.show();
+        // Force the stage to the front.
+        stage.setAlwaysOnTop(true);
+        stage.toFront();
+        stage.requestFocus();
+        gamepane.requestFocus();
+
+        // Reset always-on-top after a short delay.
+        Platform.runLater(() -> stage.setAlwaysOnTop(false));
 
         Set<KeyCode> keysPressed = new HashSet<>();
         gamescene.setOnKeyPressed(event -> {
@@ -75,6 +85,8 @@ public class HelloApplication extends Application {
         gamescene.setOnKeyReleased(event -> {
             keysPressed.remove(event.getCode());
         });
+        AtomicBoolean stopped = new AtomicBoolean(false);
+
 
 //--------------------------------------------------------------------------------while
         ArrayList<Trapezoid> stack = new ArrayList<>();
@@ -85,8 +97,6 @@ public class HelloApplication extends Application {
 
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
-
-
             public void handle(long l) {
                 //------------------------------------------------------------------------ADD
                 if(stack.getLast().getRadius() <cons.getNEED_ADD_RADIUS()){
@@ -153,7 +163,7 @@ public class HelloApplication extends Application {
                             intersection.getBoundsInLocal().getHeight() > 0;
                     if(isColliding) {
                         System.out.println("khorde khorde");
-                        this.stop();
+//                        this.stop();
                     }
 
 //                    if(trap.getRadius()==0) {
@@ -184,12 +194,29 @@ public class HelloApplication extends Application {
                 if (keysPressed.contains(KeyCode.LEFT)) {
                     Change.update_player_left();
                 }
+                if (keysPressed.contains(KeyCode.P)) {
+                    this.stop();
+                    stopped.set(true);
+                    onstop();
+                }
                 //----------------------------------------------------------------flow
             }
         };
         animationTimer.start();
-        //--------------------------------------------------------------------------------while true
         gamepane.getChildren().add(centerpoly.polygon);
         gamepane.getChildren().add(playercircle);
+//        gamescene.setOnKeyPressed(event -> {
+//            switch (event.getCode()) {
+//                case P -> {
+//                    if (stopped) {
+//                        animationTimer.start();
+//                    }
+//                    else {
+//                        animationTimer.stop();
+//                    }
+//                }
+//            }
+//        });
+        //--------------------------------------------------------------------------------while true
     }
 }
