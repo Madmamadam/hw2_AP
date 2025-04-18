@@ -29,11 +29,11 @@ public class Constant {
     private double CENTRAL_RADIUS=40;
     private double PLAYER_RADIUS=CENTRAL_RADIUS*1.5;
     private double PLAYER_CIRCLE_RADIUS = 4;
-    private double CONTROL_DELTA_ANGLE =0.5*3.1415/180;
+    private double CONTROL_DELTA_ANGLE =5*3.1415/180;
     private double ACC_DECENT_CONSTANT=0.0003;
-    private double ACC_DECENT_SCALE=0.01;
+//    private double ACC_DECENT_SCALE=0.01;
     private double ACC_DEGREE_DELTA=0.0001;
-    private double ACC_CONTROL_DELTA_ANGLE =0.025*3.1415/180;
+    private double ACC_CONTROL_DELTA_ANGLE =0.0005*3.1415/180;
     private long DEAD_SEEING_TIME=2;//millisecond
 
     public double getACC_CONTROL_DELTA_ANGLE() {

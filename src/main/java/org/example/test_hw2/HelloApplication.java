@@ -70,7 +70,9 @@ public class HelloApplication extends Application {
                 togglePause();
             }
         });
-
+        gamescene.setOnKeyReleased(event -> {
+            keysPressed.remove(event.getCode());
+        });
 
         stage.setHeight(800);
         stage.setWidth(1200);
