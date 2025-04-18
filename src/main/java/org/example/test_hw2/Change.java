@@ -1,5 +1,6 @@
 package org.example.test_hw2;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import static java.lang.Math.*;
@@ -52,6 +53,19 @@ public class Change {
 
         playercircle.setCenterX(cons.getCENTRAL_X()+radius*cos(next_real_angle));
         playercircle.setCenterY(cons.getCENTRAL_Y()+radius*sin(next_real_angle));
+
+    }
+    public static void  update_Colors(){
+        Constant cons = Constant.getinstance();
+
+//        cons.setTRAP_COLOR(Color.hsb((cons.getTRAP_COLOR().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
+        cons.setTHEME_COLOR1(Color.hsb((cons.getTHEME_COLOR1().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
+        cons.setTHEME_COLOR2(Color.hsb((cons.getTHEME_COLOR2().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
+        cons.setTHEME_COLOR3(Color.hsb((cons.getTHEME_COLOR3().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
+        cons.setCENTER_POLY_COLOR(Color.hsb((cons.getCENTER_POLY_COLOR().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
+        cons.setOUTLINE_COLOR(Color.hsb((cons.getOUTLINE_COLOR().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
+
+
 
     }
 

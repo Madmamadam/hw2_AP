@@ -4,7 +4,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -12,10 +11,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
-import java.io.IOException;
+import javax.print.attribute.standard.Media;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -27,6 +31,7 @@ public class HelloApplication extends Application {
     public static Circle playercircle = new Circle();
     private AtomicBoolean isPaused = new AtomicBoolean(false);
     private Timeline timeline = new Timeline();
+    private LocalDateTime start = LocalDateTime.now();
 
     public static void main(String[] args) {
         launch();
@@ -34,6 +39,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Constant cons = Constant.getinstance();
+
 //        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menu.fxml"));
 //        Pane root = new Pane();
         Pane gamepane = new Pane();
@@ -44,6 +50,12 @@ public class HelloApplication extends Application {
         playercircle.setCenterY(cons.getCENTRAL_Y());
 
 
+        Text timeLabel = new Text("Time: 00:00");
+        timeLabel.setX(100);
+        timeLabel.setY(100);
+        timeLabel.setFill(Color.WHITE);
+        timeLabel.setFont(Font.font("Verdana", FontWeight.BOLD , 20));
+        timeLabel.setSelectionFill(Color.PURPLE);
 
         Shaapes.theme_triangle theme_triangle = new Shaapes.theme_triangle();
         theme_triangle.update();
@@ -60,6 +72,8 @@ public class HelloApplication extends Application {
 
         stage.setScene(gamescene);
         Shaapes.cenpolygan centerpoly = new Shaapes.cenpolygan();
+        Shaapes.outer_center_poly outer_center_polygon = new Shaapes.outer_center_poly();
+        outer_center_polygon.update(cons.getCENTRAL_RADIUS(),0);
         centerpoly.update_center_polygon(cons.getCENTRAL_RADIUS(),centerpoly.getFirst_angle_in_degree());
         centerpoly.polygon.setFill(cons.getCENTER_POLY_COLOR());
 
@@ -69,22 +83,30 @@ public class HelloApplication extends Application {
             if (event.getCode() == KeyCode.SPACE) {
                 togglePause();
             }
+            if (event.getCode() == KeyCode.ESCAPE){
+                System.exit(2);
+            }
         });
         gamescene.setOnKeyReleased(event -> {
             keysPressed.remove(event.getCode());
         });
 
-        stage.setHeight(800);
-        stage.setWidth(1200);
+        stage.setFullScreen(true);
+//        stage.setMaximized(true);
+        Window window = stage.getScene().getWindow();
+
         stage.show();
         // Force the stage to the front.
         stage.setAlwaysOnTop(true);
+        System.out.println(stage.getWidth());
+        System.out.println(stage.getHeight());
         stage.toFront();
         stage.requestFocus();
         gamepane.requestFocus();
 
         // Reset always-on-top after a short delay.
         Platform.runLater(() -> stage.setAlwaysOnTop(false));
+
 
 
 //--------------------------------------------------------------------------------while
@@ -94,13 +116,12 @@ public class HelloApplication extends Application {
         Random rand = new Random();
 
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(7), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.millis(17), event -> {
                 //------------------------------------------------------------------------ADD
                 if(stack.getLast().getRadius() <cons.getNEED_ADD_RADIUS()){
                     if(reverse.get()==1) {
                         int counter=0;
-                        for(int j =0; j<cons.getGAME_NUMBER()-1;j++) {
-//                            System.out.println(stack.size());
+                        for(int j =0; -1<stack.size() -1 -j-counter && j<cons.getGAME_NUMBER()-1;j++) {
                             Trapezoid oldtrap=stack.get(stack.size() -1 -j-counter);
                             if(oldtrap.getRadius()-stack.getLast().getRadius()<cons.getEpsilon() && oldtrap.getRadius()-stack.getLast().getRadius()>-cons.getEpsilon() ) {
                                 Trapezoid newtrap = new Trapezoid();
@@ -109,6 +130,7 @@ public class HelloApplication extends Application {
                                 stack.add(newtrap);
                                 gamepane.getChildren().add(stack.getLast().polygon);
                                 counter+=1;
+
                             }
                         }
                     }
@@ -178,30 +200,25 @@ public class HelloApplication extends Application {
                 if (keysPressed.contains(KeyCode.LEFT)) {
                     Change.update_player_left();
                 }
+
+                // Update the label with the current time
+                timeLabel.setText("Time: " + formatDuration());
+
                 centerpoly.update_center_polygon(cons.getCENTRAL_RADIUS(), centerpoly.getFirst_angle_in_degree());
+                outer_center_polygon.update(outer_center_polygon.getRadius(), outer_center_polygon.getFirst_angle_in_degree());
+
                 theme_triangle.update();
                 cons.setREFERENCE_ANGLE_IN_DEGREE(cons.getREFERENCE_ANGLE_IN_DEGREE()+cons.getDEGREE_DELTA());
                 centerpoly.polygon.toFront();
+                for (int i = 0; i < cons.getGAME_NUMBER(); i++) {
+                    outer_center_polygon.trapezoids[i].polygon.toFront();
+                }
                 playercircle.toFront();
                 Change.update_player();
                 cons.setDEGREE_DELTA(cons.getDEGREE_DELTA()+cons.getACC_DEGREE_DELTA());
                 cons.setCONTROL_DELTA_ANGLE(cons.getCONTROL_DELTA_ANGLE()+cons.getACC_CONTROL_DELTA_ANGLE());
                 cons.setDECENT_CONSTANT(cons.getDECENT_CONSTANT()+cons.getACC_DECENT_CONSTANT());
-                keysPressed.clear();
-//                gamescene.setOnKeyPressed(event -> {
-//                    switch (event.getCode()) {
-//                        case RIGHT -> Change.update_player_right(); // Move Up
-//                        case LEFT  -> Change.update_player_left();
-//                    }
-//                });
-
-
-//                if (keysPressed.contains(KeyCode.SPACE)) {
-//                    while (!keysPressed.contains(KeyCode.P)) {
-//
-//                    }
-//                }
-
+                Change.update_Colors();
                 //----------------------------------------------------------------flow
 
         }));
@@ -210,10 +227,14 @@ public class HelloApplication extends Application {
 
         gamepane.getChildren().add(centerpoly.polygon);
         gamepane.getChildren().add(playercircle);
+        gamepane.getChildren().addAll(timeLabel);
+        for (int i = 0; i < cons.getGAME_NUMBER(); i++) {
+            gamepane.getChildren().addAll(outer_center_polygon.trapezoids[i].polygon);
+        }
 
 
-        //--------------------------------------------------------------------------------while true
     }
+
     private void togglePause() {
         isPaused.set(!isPaused.get());
         if (!isPaused.get()) {
@@ -221,5 +242,12 @@ public class HelloApplication extends Application {
         } else {
             timeline.pause();
         }
+    }
+    private String formatDuration() {
+        LocalDateTime now = LocalDateTime.now();
+        double totalSeconds =24*60*60*now.getDayOfYear() + 60*60*now.getHour() + 60*now.getMinute() + now.getSecond()-24*60*60*start.getDayOfYear()-60*60*start.getHour() -60*start.getMinute() -start.getSecond();
+        int minutes = (int) (totalSeconds / 60);
+        int seconds = (int) (totalSeconds % 60);
+        return String.format("%02d:%02d", minutes, seconds);
     }
 }

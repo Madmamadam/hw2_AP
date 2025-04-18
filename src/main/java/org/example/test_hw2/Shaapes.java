@@ -9,6 +9,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public class Shaapes {
+
     public static class Type1 {
         Constant cons = new Constant();
         private double radius;
@@ -122,6 +123,42 @@ public class Shaapes {
         }
 
     }
+    public static class outer_center_poly {
+        Constant cons = Constant.getinstance();
+        private double radius;
+        private double first_angle_in_degree;
+        private int number_of_trapezoid = cons.getGAME_NUMBER() ;
+
+        public double getRadius() {
+            return radius;
+        }
+
+        public double getFirst_angle_in_degree() {
+            return first_angle_in_degree;
+        }
+
+
+        public Trapezoid[] trapezoids = new Trapezoid[number_of_trapezoid];
+
+
+        public void update(double radius, double first_angle_in_degree) {
+            if (radius <= 0) radius = 0;
+            this.radius = radius;
+            this.first_angle_in_degree = first_angle_in_degree;
+            for (int i = 0; i < number_of_trapezoid; i++) {
+                this.trapezoids[i].update_trap_polygon(radius, first_angle_in_degree + 360 * i / cons.getGAME_NUMBER());
+                this.trapezoids[i].polygon.setFill(cons.getOUTLINE_COLOR());
+            }
+        }
+
+        //initialize
+        public outer_center_poly() {
+            for (int i = 0; i < number_of_trapezoid; i++) {
+                this.trapezoids[i] = new Trapezoid();
+                this.trapezoids[i].polygon = new Polygon();
+            }
+        }
+    }
     public static class cenpolygan{
         private double radius;
         private double first_angle_in_degree_from_reference;
@@ -149,6 +186,7 @@ public class Shaapes {
                 double i_th_angle = first_angle + i*2*3.1415/cons.getGAME_NUMBER();
                 polygon.getPoints().addAll(radius2 * cos(i_th_angle) + cons.getCENTRAL_X() ,radius2*sin(i_th_angle)+ cons.getCENTRAL_Y());
             }
+            this.polygon.setFill(cons.getCENTER_POLY_COLOR());
         }
     }
     public static class player_mahlar {

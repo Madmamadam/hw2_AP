@@ -1,40 +1,44 @@
 package org.example.test_hw2;
+import javafx.stage.Screen;
 
 import javafx.scene.paint.Color;
 
 public class Constant {
-    private Double CENTRAL_X = 700.0;
-    private Double CENTRAL_Y =400.0 ;
-    private Double RATIO = 0.1;
+    private Double CENTRAL_X = Screen.getPrimary().getBounds().getWidth()/2;
+    private Double CENTRAL_Y =Screen.getPrimary().getBounds().getHeight()/2 ;
+    private Double RATIO = 0.15;
     private Double ANGLE = 3.1415/3;
     private double CHANCE=0.99;
     // GAME_NUMBER is in {4,5,6}
     private int GAME_NUMBER = 6;
-    private double DECENT_CONSTANT =1.5;
+    private double DECENT_CONSTANT =1;
     private double DECENT_SCALE =0.98;
     private boolean CONSTANT_DECENT_MODE = true;
     private double DEGREE_DELTA = 0.4;
     private boolean CLOCKWISE = true;
-    private double NEED_ADD_RADIUS=2000;
+    private double NEED_ADD_RADIUS=1500;
     private double ADDING_RADIUS=NEED_ADD_RADIUS+200;
     private double REVERSE_CHANCE=0.1;
     private Color TRAP_COLOR = Color.BLUE;
     private Color THEME_COLOR1 = Color.BLACK;
     private Color THEME_COLOR2 = Color.PURPLE;
     private Color THEME_COLOR3 = Color.BLACK;
-    private Color CENTER_POLY_COLOR = Color.BROWN;
+    private Color CENTER_POLY_COLOR = Color.BLACK;
     private double epsilon = NEED_ADD_RADIUS-ADDING_RADIUS/2;
     private double CONTROL_SPEED =10;
     private double REFERENCE_ANGLE_IN_DEGREE = 2;
     private double CENTRAL_RADIUS=40;
     private double PLAYER_RADIUS=CENTRAL_RADIUS*1.5;
     private double PLAYER_CIRCLE_RADIUS = 4;
-    private double CONTROL_DELTA_ANGLE =5*3.1415/180;
+    private double CONTROL_DELTA_ANGLE =2*3.1415/180;
     private double ACC_DECENT_CONSTANT=0.0003;
 //    private double ACC_DECENT_SCALE=0.01;
     private double ACC_DEGREE_DELTA=0.0001;
     private double ACC_CONTROL_DELTA_ANGLE =0.0005*3.1415/180;
     private long DEAD_SEEING_TIME=2;//millisecond
+    private double HUE_SPEED =0.5;
+    private Color OUTLINE_COLOR = Color.PURPLE;
+
 
     public double getACC_CONTROL_DELTA_ANGLE() {
         return ACC_CONTROL_DELTA_ANGLE;
@@ -104,9 +108,7 @@ public class Constant {
     public Color getTHEME_COLOR2() {return THEME_COLOR2;}
     public Color getTHEME_COLOR3() {return THEME_COLOR3;}
     public Color getCENTER_POLY_COLOR() {return CENTER_POLY_COLOR;}
-    public double getEpsilon() {
-        return epsilon;
-    }
+    public double getEpsilon() {return epsilon;}
     public double getCONTROL_SPEED() {return CONTROL_SPEED;}
     public double getREFERENCE_ANGLE_IN_DEGREE(){return REFERENCE_ANGLE_IN_DEGREE;}
     public double getCENTRAL_RADIUS() {return CENTRAL_RADIUS;}
@@ -114,8 +116,8 @@ public class Constant {
     public double getPLAYER_CIRCLE_RADIUS() {return PLAYER_CIRCLE_RADIUS;}
     public double getCONTROL_DELTA_ANGLE() {return CONTROL_DELTA_ANGLE;}
     public long getDEAD_SEEING_TIME() {return DEAD_SEEING_TIME;}
-
-
+    public double getHUE_SPEED() {return HUE_SPEED;}
+    public Color getOUTLINE_COLOR() {return OUTLINE_COLOR;}
 
 
     public void setREFERENCE_ANGLE_IN_DEGREE(double REFERENCE_ANGLE_IN_DEGREE) {
@@ -132,5 +134,12 @@ public class Constant {
     public void setDEGREE_DELTA(double DEGREE_DELTA) {
         this.DEGREE_DELTA = DEGREE_DELTA;
     }
+    public void setTRAP_COLOR(Color TRAP_COLOR) {this.TRAP_COLOR = TRAP_COLOR;}
+    public void setTHEME_COLOR1(Color THEME_COLOR1) {this.THEME_COLOR1 = THEME_COLOR1;}
+    public void setTHEME_COLOR2(Color THEME_COLOR2) {this.THEME_COLOR2 = THEME_COLOR2;}
+    public void setTHEME_COLOR3(Color THEME_COLOR3) {this.THEME_COLOR3 = THEME_COLOR3;}
+    public void setCENTER_POLY_COLOR(Color CENTER_POLY_COLOR) {this.CENTER_POLY_COLOR = CENTER_POLY_COLOR;}
+    public void setOUTLINE_COLOR(Color OUTLINE_COLOR) {this.OUTLINE_COLOR = OUTLINE_COLOR;}
+
 
 }
