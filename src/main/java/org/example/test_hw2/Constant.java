@@ -13,9 +13,9 @@ public class Constant {
     private double DECENT_CONSTANT =1.5;
     private double DECENT_SCALE =0.98;
     private boolean CONSTANT_DECENT_MODE = true;
-    private double DEGREE_DELTA = 0.3;
+    private double DEGREE_DELTA = 0.4;
     private boolean CLOCKWISE = true;
-    private double NEED_ADD_RADIUS=900;
+    private double NEED_ADD_RADIUS=2000;
     private double ADDING_RADIUS=NEED_ADD_RADIUS+200;
     private double REVERSE_CHANCE=0.1;
     private Color TRAP_COLOR = Color.BLUE;
@@ -29,11 +29,12 @@ public class Constant {
     private double CENTRAL_RADIUS=40;
     private double PLAYER_RADIUS=CENTRAL_RADIUS*1.5;
     private double PLAYER_CIRCLE_RADIUS = 4;
-    private double CONTROL_DELTA_ANGLE =3*3.1415/180;
-    private double ACC_DECENT_CONSTANT=0.003;
-//    private double ACC_DECENT_SCALE=0.01;
-    private double ACC_DEGREE_DELTA=0.001;
-    private double ACC_CONTROL_DELTA_ANGLE =0.0025*3.1415/180;
+    private double CONTROL_DELTA_ANGLE =0.5*3.1415/180;
+    private double ACC_DECENT_CONSTANT=0.0003;
+    private double ACC_DECENT_SCALE=0.01;
+    private double ACC_DEGREE_DELTA=0.0001;
+    private double ACC_CONTROL_DELTA_ANGLE =0.025*3.1415/180;
+    private long DEAD_SEEING_TIME=2;//millisecond
 
     public double getACC_CONTROL_DELTA_ANGLE() {
         return ACC_CONTROL_DELTA_ANGLE;
@@ -112,6 +113,7 @@ public class Constant {
     public double getPLAYER_RADIUS() {return PLAYER_RADIUS;}
     public double getPLAYER_CIRCLE_RADIUS() {return PLAYER_CIRCLE_RADIUS;}
     public double getCONTROL_DELTA_ANGLE() {return CONTROL_DELTA_ANGLE;}
+    public long getDEAD_SEEING_TIME() {return DEAD_SEEING_TIME;}
 
 
 

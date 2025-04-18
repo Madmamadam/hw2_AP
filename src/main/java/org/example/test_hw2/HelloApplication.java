@@ -1,8 +1,11 @@
 package org.example.test_hw2;
 
-import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -10,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +25,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class HelloApplication extends Application {
     public static Circle playercircle = new Circle();
+    private AtomicBoolean isPaused = new AtomicBoolean(false);
+    private Timeline timeline = new Timeline();
 
     public static void main(String[] args) {
         launch();
@@ -51,18 +57,19 @@ public class HelloApplication extends Application {
 //        root= fxmlLoader.load();
 //        Scene scene = new Scene(root);
         Scene gamescene = new Scene(gamepane);
-//        gamescene.setOnKeyPressed(event -> {
-//            switch (event.getCode()) {
-//                case RIGHT -> Change.update_player_right(); // Move Up
-//                case LEFT  -> Change.update_player_left();
-//            }
-//        });
+
         stage.setScene(gamescene);
         Shaapes.cenpolygan centerpoly = new Shaapes.cenpolygan();
         centerpoly.update_center_polygon(cons.getCENTRAL_RADIUS(),centerpoly.getFirst_angle_in_degree());
         centerpoly.polygon.setFill(cons.getCENTER_POLY_COLOR());
 
-
+        Set<KeyCode> keysPressed = new HashSet<>();
+        gamescene.setOnKeyPressed(event -> {
+            keysPressed.add(event.getCode());
+            if (event.getCode() == KeyCode.SPACE) {
+                togglePause();
+            }
+        });
 
 
         stage.setHeight(800);
@@ -77,16 +84,6 @@ public class HelloApplication extends Application {
         // Reset always-on-top after a short delay.
         Platform.runLater(() -> stage.setAlwaysOnTop(false));
 
-        Set<KeyCode> keysPressed = new HashSet<>();
-        gamescene.setOnKeyPressed(event -> {
-            keysPressed.add(event.getCode());
-        });
-
-        gamescene.setOnKeyReleased(event -> {
-            keysPressed.remove(event.getCode());
-        });
-        AtomicBoolean stopped = new AtomicBoolean(false);
-
 
 //--------------------------------------------------------------------------------while
         ArrayList<Trapezoid> stack = new ArrayList<>();
@@ -95,15 +92,14 @@ public class HelloApplication extends Application {
         Random rand = new Random();
 
 
-        AnimationTimer animationTimer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
+        timeline = new Timeline(new KeyFrame(Duration.millis(7), event -> {
                 //------------------------------------------------------------------------ADD
                 if(stack.getLast().getRadius() <cons.getNEED_ADD_RADIUS()){
                     if(reverse.get()==1) {
                         int counter=0;
                         for(int j =0; j<cons.getGAME_NUMBER()-1;j++) {
-                            Trapezoid oldtrap=stack.get(stack.size() - 1-j-counter);
+//                            System.out.println(stack.size());
+                            Trapezoid oldtrap=stack.get(stack.size() -1 -j-counter);
                             if(oldtrap.getRadius()-stack.getLast().getRadius()<cons.getEpsilon() && oldtrap.getRadius()-stack.getLast().getRadius()>-cons.getEpsilon() ) {
                                 Trapezoid newtrap = new Trapezoid();
                                 newtrap.update_trap_polygon(cons.getADDING_RADIUS(),oldtrap.getFirst_angle_in_degree_from_reference()+180);
@@ -163,19 +159,23 @@ public class HelloApplication extends Application {
                             intersection.getBoundsInLocal().getHeight() > 0;
                     if(isColliding) {
                         System.out.println("khorde khorde");
-                        this.stop();
+                        timeline.pause();
+                        FXMLLoader fxml = new FXMLLoader();
+                        System.exit(2);
                     }
 
 //                    if(trap.getRadius()==0) {
 //                        stack.remove(trap);
-//                    }
-                    //------------------------------------------------------------obstacle detection
-                    //if(trap.getRadius()==playercircle
-                    //------------------------------------------------------------obstacle detection
                 }
                 //----------------------------------------------------------------flow
 
                 //----------------------------------------------------------------control
+                if (keysPressed.contains(KeyCode.RIGHT)) {
+                    Change.update_player_right();
+                }
+                if (keysPressed.contains(KeyCode.LEFT)) {
+                    Change.update_player_left();
+                }
                 centerpoly.update_center_polygon(cons.getCENTRAL_RADIUS(), centerpoly.getFirst_angle_in_degree());
                 theme_triangle.update();
                 cons.setREFERENCE_ANGLE_IN_DEGREE(cons.getREFERENCE_ANGLE_IN_DEGREE()+cons.getDEGREE_DELTA());
@@ -185,41 +185,39 @@ public class HelloApplication extends Application {
                 cons.setDEGREE_DELTA(cons.getDEGREE_DELTA()+cons.getACC_DEGREE_DELTA());
                 cons.setCONTROL_DELTA_ANGLE(cons.getCONTROL_DELTA_ANGLE()+cons.getACC_CONTROL_DELTA_ANGLE());
                 cons.setDECENT_CONSTANT(cons.getDECENT_CONSTANT()+cons.getACC_DECENT_CONSTANT());
+                keysPressed.clear();
 //                gamescene.setOnKeyPressed(event -> {
 //                    switch (event.getCode()) {
 //                        case RIGHT -> Change.update_player_right(); // Move Up
 //                        case LEFT  -> Change.update_player_left();
 //                    }
 //                });
-                if (keysPressed.contains(KeyCode.RIGHT)) {
-                    Change.update_player_right();
-                }
-                if (keysPressed.contains(KeyCode.LEFT)) {
-                    Change.update_player_left();
-                }
-                if (keysPressed.contains(KeyCode.P)) {
-                    this.stop();
-                    stopped.set(true);
-//                    onstop();
-                }
-                //----------------------------------------------------------------flow
-            }
-        };
-        animationTimer.start();
-        gamepane.getChildren().add(centerpoly.polygon);
-        gamepane.getChildren().add(playercircle);
-//        gamescene.setOnKeyPressed(event -> {
-//            switch (event.getCode()) {
-//                case P -> {
-//                    if (stopped) {
-//                        animationTimer.start();
-//                    }
-//                    else {
-//                        animationTimer.stop();
+
+
+//                if (keysPressed.contains(KeyCode.SPACE)) {
+//                    while (!keysPressed.contains(KeyCode.P)) {
+//
 //                    }
 //                }
-//            }
-//        });
+
+                //----------------------------------------------------------------flow
+
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
+        gamepane.getChildren().add(centerpoly.polygon);
+        gamepane.getChildren().add(playercircle);
+
+
         //--------------------------------------------------------------------------------while true
+    }
+    private void togglePause() {
+        isPaused.set(!isPaused.get());
+        if (!isPaused.get()) {
+            timeline.play();
+        } else {
+            timeline.pause();
+        }
     }
 }
