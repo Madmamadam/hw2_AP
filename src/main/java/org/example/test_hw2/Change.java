@@ -58,7 +58,6 @@ public class Change {
     public static void  update_Colors(){
         Constant cons = Constant.getinstance();
 
-//        cons.setTRAP_COLOR(Color.hsb((cons.getTRAP_COLOR().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
         cons.setTHEME_COLOR1(Color.hsb((cons.getTHEME_COLOR1().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
         cons.setTHEME_COLOR2(Color.hsb((cons.getTHEME_COLOR2().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
         cons.setTHEME_COLOR3(Color.hsb((cons.getTHEME_COLOR3().getHue()+cons.getHUE_SPEED())%360,0.50,0.50));
