@@ -33,15 +33,12 @@ public class HelloApplication extends Application {
     private Timeline timeline = new Timeline();
     private LocalDateTime start = LocalDateTime.now();
 
-    public static void main(String[] args) {
-        launch();
-    }
     @Override
-    public void start(Stage stage) throws Exception {
+    public static void start(Stage stage) throws Exception {
         Constant cons = Constant.getinstance();
 
 //        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menu.fxml"));
-//        Pane root = new Pane();
+
         Pane gamepane = new Pane();
 
         playercircle.setFill(Color.WHITE);
@@ -93,13 +90,12 @@ public class HelloApplication extends Application {
 
         stage.setFullScreen(true);
 //        stage.setMaximized(true);
-        Window window = stage.getScene().getWindow();
 
         stage.show();
         // Force the stage to the front.
         stage.setAlwaysOnTop(true);
-        System.out.println(stage.getWidth());
-        System.out.println(stage.getHeight());
+//        System.out.println(stage.getWidth());
+//        System.out.println(stage.getHeight());
         stage.toFront();
         stage.requestFocus();
         gamepane.requestFocus();
@@ -182,10 +178,11 @@ public class HelloApplication extends Application {
                     boolean isColliding = intersection.getBoundsInLocal().getWidth() > 0 &&
                             intersection.getBoundsInLocal().getHeight() > 0;
                     if(isColliding) {
-                        System.out.println("khorde khorde");
+//                        System.out.println("khorde khorde");
                         timeline.pause();
                         FXMLLoader fxml = new FXMLLoader();
-                        System.exit(2);
+                        stage.hide();
+//                        break;
                     }
 
 //                    if(trap.getRadius()==0) {
@@ -210,6 +207,8 @@ public class HelloApplication extends Application {
                 theme_triangle.update();
                 cons.setREFERENCE_ANGLE_IN_DEGREE(cons.getREFERENCE_ANGLE_IN_DEGREE()+cons.getDEGREE_DELTA());
                 centerpoly.polygon.toFront();
+                timeLabel.toFront();
+
                 for (int i = 0; i < cons.getGAME_NUMBER(); i++) {
                     outer_center_polygon.trapezoids[i].polygon.toFront();
                 }
