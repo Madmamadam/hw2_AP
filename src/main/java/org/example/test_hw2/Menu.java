@@ -3,6 +3,7 @@ package org.example.test_hw2;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class Menu {
 
@@ -17,7 +18,8 @@ public class Menu {
     }
     @FXML
     private void click_shod(ActionEvent event) {
-        System.out.println("khorde.");
+        System.out.println("khorr");
+//        HelloApplication.staart(prima);
 
     }
 

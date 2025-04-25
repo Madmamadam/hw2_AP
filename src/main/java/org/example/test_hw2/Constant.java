@@ -18,7 +18,7 @@ public class Constant {
     private boolean CONSTANT_DECENT_MODE = true;
     private double DEGREE_DELTA = 0.6*PAYE;
     private boolean CLOCKWISE = true;
-    private double NEED_ADD_RADIUS=1500;
+    private double NEED_ADD_RADIUS=800;
     private double ADDING_RADIUS=NEED_ADD_RADIUS+200;
     private double REVERSE_CHANCE=0.1;
     private Color TRAP_COLOR = Color.GRAY;

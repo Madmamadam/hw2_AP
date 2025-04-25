@@ -27,14 +27,12 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HelloApplication extends Application {
-    public static Circle playercircle = new Circle();
-    private AtomicBoolean isPaused = new AtomicBoolean(false);
-    private Timeline timeline = new Timeline();
-    private LocalDateTime start = LocalDateTime.now();
-
-    @Override
-    public static void start(Stage stage) throws Exception {
+public class HelloApplication {
+    static AtomicBoolean isPaused = new AtomicBoolean(false);
+    static Timeline timeline = new Timeline();
+    static Circle playercircle = new Circle();
+    static LocalDateTime start = LocalDateTime.now();
+    public static void staart(Stage stage) {
         Constant cons = Constant.getinstance();
 
 //        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menu.fxml"));
@@ -81,7 +79,8 @@ public class HelloApplication extends Application {
                 togglePause();
             }
             if (event.getCode() == KeyCode.ESCAPE){
-                System.exit(2);
+                timeline.stop();
+                stage.hide();
             }
         });
         gamescene.setOnKeyReleased(event -> {
@@ -94,8 +93,6 @@ public class HelloApplication extends Application {
         stage.show();
         // Force the stage to the front.
         stage.setAlwaysOnTop(true);
-//        System.out.println(stage.getWidth());
-//        System.out.println(stage.getHeight());
         stage.toFront();
         stage.requestFocus();
         gamepane.requestFocus();
@@ -179,9 +176,11 @@ public class HelloApplication extends Application {
                             intersection.getBoundsInLocal().getHeight() > 0;
                     if(isColliding) {
 //                        System.out.println("khorde khorde");
-                        timeline.pause();
-                        FXMLLoader fxml = new FXMLLoader();
+                        timeline.stop();
                         stage.hide();
+
+//                        FXMLLoader fxml = new FXMLLoader();
+                        return;
 //                        break;
                     }
 
@@ -232,9 +231,10 @@ public class HelloApplication extends Application {
         }
 
 
+
     }
 
-    private void togglePause() {
+    private static void togglePause() {
         isPaused.set(!isPaused.get());
         if (!isPaused.get()) {
             timeline.play();
@@ -242,7 +242,7 @@ public class HelloApplication extends Application {
             timeline.pause();
         }
     }
-    private String formatDuration() {
+    private static String formatDuration() {
         LocalDateTime now = LocalDateTime.now();
         double totalSeconds =24*60*60*now.getDayOfYear() + 60*60*now.getHour() + 60*now.getMinute() + now.getSecond()-24*60*60*start.getDayOfYear()-60*60*start.getHour() -60*start.getMinute() -start.getSecond();
         int minutes = (int) (totalSeconds / 60);

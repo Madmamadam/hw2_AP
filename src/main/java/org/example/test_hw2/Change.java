@@ -1,7 +1,6 @@
 package org.example.test_hw2;
 
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 import static java.lang.Math.*;
 import static org.example.test_hw2.HelloApplication.playercircle;
