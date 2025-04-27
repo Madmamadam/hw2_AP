@@ -8,11 +8,12 @@ public class Play {
 
 
 
-    public Play(String username,double score) {
+
+    public Play(){}
+
+    public Play(String username) {
         this.username = username;
-        this.score = score;
+        this.score = 0;
         this.date = Date.tostring();
-
-
     }
 }

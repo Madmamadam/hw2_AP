@@ -22,10 +22,8 @@ public class filee {
         ObjectMapper mapper = new ObjectMapper();
         if (file.exists()) {
             try (InputStream input = new FileInputStream(file)) {
-                CollectionType listType = mapper.getTypeFactory()
-                        .constructCollectionType(List.class, Play.class);
-//                List<User> loadedUsers = mapper.readValue(input, listType);
-//                users = loadedUsers;
+                CollectionType listType = mapper.getTypeFactory().constructCollectionType(List.class, Play.class);
+                plays = mapper.readValue(input, listType);
                 //System.out.println("Users loaded: " + loadedUsers);
 
             }

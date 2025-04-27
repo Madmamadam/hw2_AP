@@ -144,4 +144,7 @@ public class Constant {
     public void setOUTLINE_COLOR(Color OUTLINE_COLOR) {this.OUTLINE_COLOR = OUTLINE_COLOR;}
 
 
+    public void reset() {
+        instance = null;
+    }
 }

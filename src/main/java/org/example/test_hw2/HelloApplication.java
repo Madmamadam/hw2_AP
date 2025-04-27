@@ -2,9 +2,7 @@ package org.example.test_hw2;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -15,10 +13,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.util.Duration;
 
-import javax.print.attribute.standard.Media;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,13 +23,24 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.example.test_hw2.filee.plays;
+
 public class HelloApplication {
     static AtomicBoolean isPaused = new AtomicBoolean(false);
     static Timeline timeline = new Timeline();
     static Circle playercircle = new Circle();
-    static LocalDateTime start = LocalDateTime.now();
-    public static void staart(Stage stage) {
+    static long lastStartTime ;
+    static long runningTimeMillis;
+    static Text timeLabel = new Text();
+
+
+
+
+    public static void staart(Stage stage , Play play , boolean save) {
         Constant cons = Constant.getinstance();
+        LocalDateTime start = LocalDateTime.now();
+        runningTimeMillis = 0;
+        lastStartTime = System.currentTimeMillis();;
 
 //        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menu.fxml"));
 
@@ -44,8 +51,6 @@ public class HelloApplication {
         playercircle.setCenterX(cons.getCENTRAL_X()+cons.getPLAYER_RADIUS());
         playercircle.setCenterY(cons.getCENTRAL_Y());
 
-
-        Text timeLabel = new Text("Time: 00:00");
         timeLabel.setX(100);
         timeLabel.setY(100);
         timeLabel.setFill(Color.WHITE);
@@ -81,6 +86,10 @@ public class HelloApplication {
             if (event.getCode() == KeyCode.ESCAPE){
                 timeline.stop();
                 stage.hide();
+                stage.setFullScreen(false);
+                cons.reset();
+                play.score=score();
+                if (save) {plays.add(play);}
             }
         });
         gamescene.setOnKeyReleased(event -> {
@@ -177,7 +186,16 @@ public class HelloApplication {
                     if(isColliding) {
 //                        System.out.println("khorde khorde");
                         timeline.stop();
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                         stage.hide();
+                        stage.setFullScreen(false);
+                        cons.reset();
+                        play.score=score();
+                        if (save) {plays.add(play);}
 
 //                        FXMLLoader fxml = new FXMLLoader();
                         return;
@@ -198,7 +216,6 @@ public class HelloApplication {
                 }
 
                 // Update the label with the current time
-                timeLabel.setText("Time: " + formatDuration());
 
                 centerpoly.update_center_polygon(cons.getCENTRAL_RADIUS(), centerpoly.getFirst_angle_in_degree());
                 outer_center_polygon.update(outer_center_polygon.getRadius(), outer_center_polygon.getFirst_angle_in_degree());
@@ -217,6 +234,7 @@ public class HelloApplication {
                 cons.setCONTROL_DELTA_ANGLE(cons.getCONTROL_DELTA_ANGLE()+cons.getACC_CONTROL_DELTA_ANGLE());
                 cons.setDECENT_CONSTANT(cons.getDECENT_CONSTANT()+cons.getACC_DECENT_CONSTANT());
                 Change.update_Colors();
+                printdate();
                 //----------------------------------------------------------------flow
 
         }));
@@ -238,15 +256,30 @@ public class HelloApplication {
         isPaused.set(!isPaused.get());
         if (!isPaused.get()) {
             timeline.play();
+            lastStartTime = System.currentTimeMillis();
         } else {
             timeline.pause();
+            runningTimeMillis += System.currentTimeMillis() - lastStartTime;
         }
     }
-    private static String formatDuration() {
-        LocalDateTime now = LocalDateTime.now();
-        double totalSeconds =24*60*60*now.getDayOfYear() + 60*60*now.getHour() + 60*now.getMinute() + now.getSecond()-24*60*60*start.getDayOfYear()-60*60*start.getHour() -60*start.getMinute() -start.getSecond();
-        int minutes = (int) (totalSeconds / 60);
-        int seconds = (int) (totalSeconds % 60);
-        return String.format("%02d:%02d", minutes, seconds);
+    private static void printdate() {
+        if (!isPaused.get()) {
+            long nowMillis = System.currentTimeMillis();
+            long total = runningTimeMillis + (nowMillis - lastStartTime);
+            timeLabel.setText(String.format("Time: %.1f s", total / 1000.0));
+        }
+        else {
+            timeLabel.setText(String.format("Time: %.1f s", runningTimeMillis / 1000.0));
+        }
+    }
+    private static double score() {
+        if (!isPaused.get()) {
+            long nowMillis = System.currentTimeMillis();
+            long total = runningTimeMillis + (nowMillis - lastStartTime);
+            return  (double) (total / 1000.0);
+        }
+        else {
+            return  (double) (runningTimeMillis / 1000.0);
+        }
     }
 }
